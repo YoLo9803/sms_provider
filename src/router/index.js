@@ -1,8 +1,6 @@
 // 載入官方的元件
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import HelloWorld from '@/components/HelloWorld';
-import Page from '@/pages/page';
 
 Vue.use(VueRouter);
 
@@ -12,13 +10,20 @@ export default new VueRouter({
     routes: [
         {
             name: '首頁', // 元件呈現的名稱
-            path: '/index', // 對應的虛擬路徑
-            component: HelloWorld, // 對應的元件
-        },
-        {
-            name: '分頁',
-            path: '/page',
-            component: Page,
+            path: '/', // 對應的虛擬路徑
+            component: () => import('@/pages/common/header'),
+            children:[
+                {
+                    name:'登入',
+                    path:'',
+                    component: () => import('@/pages/login'),
+                },
+                {
+                    name:'註冊',
+                    path:'register',
+                    component: () => import('@/pages/register'),
+                }
+            ]
         }
             // children:[
             //     {
