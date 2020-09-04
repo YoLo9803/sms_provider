@@ -27,10 +27,6 @@ export default {
 
 <style scoped lang="scss">
     .register-title{
-        // position: relative;
-        // top:40%;
-        // width:100%;
-        // margin-top: -230px;
         text-align: center;
         font-size:30px;
         color: black;

@@ -67,10 +67,6 @@ export default {
 
 <style scoped lang="scss">
     .login-title{
-        // position: relative;
-        // top:40%;
-        // width:100%;
-        // margin-top: -230px;
         text-align: center;
         font-size:30px;
         color: black;
@@ -96,6 +92,6 @@ export default {
         padding:30px;
         transform:translateX(-50%);
         border-radius: 10px;
-        background: rgb(199, 199, 198);
+        background: rgb(224, 224, 224);
     }
 </style>
