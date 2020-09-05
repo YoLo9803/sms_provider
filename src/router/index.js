@@ -31,28 +31,5 @@ export default new VueRouter({
                 }
             ]
         }
-            // children:[
-            //     {
-            //         name:'卡片 1',
-            //         path:'',
-            //         component: Child,
-            //     }
-        //         {
-        //             name:'卡片 2',
-        //             path:'child2',
-        //             component: Child2,
-        //         },
-        //         {
-        //             name:'卡片 2',
-        //             path:'child3',
-        //             component: Child3,
-        //         }
-        //     ]
-        // },
-        // {
-        //     name: '分頁2',
-        //     path: '/page2',
-        //     component: Page2,
-        // }
     ]
 });

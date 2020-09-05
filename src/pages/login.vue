@@ -70,6 +70,7 @@ export default {
                         }
                         else if(response.status == 200){
                             console.log('login success');
+                            // TODO: 不能傳密碼回去
                             this.$emit('childInit', response.data);
                             this.$router.push('/smspva');
                         }
