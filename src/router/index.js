@@ -27,7 +27,7 @@ export default new VueRouter({
                     name:'快速取碼',
                     path:'smspva',
                     component: () => import('@/pages/smspva'),
-                    meta: { requiresAuth: true },
+                    // meta: { requiresAuth: true },
                 }
             ]
         }

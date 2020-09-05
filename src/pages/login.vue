@@ -23,6 +23,12 @@
 
 <script>
 export default {
+    props: {
+        from: {
+        type: String,
+        default: ""
+        }
+    },
     data(){
         return {
             errorInfo : false,
@@ -44,7 +50,8 @@ export default {
                     { required: true, message: '請輸入密碼', trigger: 'blur' },
                     { min: 2, max: 18, message: '密碼長度應為2~18個字元'}
                 ]
-            }
+            },
+            msg: 'Welcome'
         };
     },
     methods: {
@@ -63,6 +70,7 @@ export default {
                         }
                         else if(response.status == 200){
                             console.log('login success');
+                            this.$emit('childInit', response.data);
                             this.$router.push('/smspva');
                         }
                     })
