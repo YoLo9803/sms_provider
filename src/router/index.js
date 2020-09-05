@@ -22,6 +22,12 @@ export default new VueRouter({
                     name:'註冊',
                     path:'register',
                     component: () => import('@/pages/register'),
+                },
+                {
+                    name:'快速取碼',
+                    path:'smspva',
+                    component: () => import('@/pages/smspva'),
+                    meta: { requiresAuth: true },
                 }
             ]
         }

@@ -13,7 +13,7 @@
                     <span style="color: red">{{errInfo}}</span>
                 </div>
                 <div>
-                    <el-button class='login-button' type="primary" @click="submitForm('ruleForm')">登陸</el-button>
+                    <el-button class='login-button' type="primary" @click.prevent="submitForm('ruleForm')">登陸</el-button>
                 </div>
                     <router-link class='register-router-link' to='register'>註冊</router-link>
             </el-form>
@@ -51,19 +51,19 @@ export default {
         submitForm(formName){
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    console.log(JSON.stringify(this.ruleForm));
-                    this.$http.post('/api/user/login', JSON.stringify(this.ruleForm))
+                    this.$http.post('/api/user/login', this.ruleForm)
                     .then((response) => {
                         if (response.data == 0){
                             this.errorInfo = true;
-                            this.errorInfo = '查無此帳號, 請確認電子郵件是否輸入正確';
+                            this.errInfo = '查無此帳號, 請確認電子郵件是否輸入正確';
                         }
                         else if(response.data == -1){
                             this.errorInfo = true;
-                            this.errorInfo = '密碼錯誤';
+                            this.errInfo = '密碼錯誤';
                         }
                         else if(response.status == 200){
                             console.log('login success');
+                            this.$router.push('/smspva');
                         }
                     })
                     .then((err)=>{

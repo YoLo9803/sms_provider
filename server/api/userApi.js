@@ -39,7 +39,8 @@ router.post('/login', (req, res) => {
     var sql = "SELECT * FROM `user` WHERE `account` = ?";
     var body = req.body;
     console.log(sql);
-    if (body.account && body.password){
+    console.log(body);
+    if (body.account != undefined && body.password != undefined){
         conn.query({
             sql: sql,
             values: [body.account]
