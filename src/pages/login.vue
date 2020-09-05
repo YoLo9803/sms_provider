@@ -51,10 +51,24 @@ export default {
         submitForm(formName){
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    console.log('sucess!!');
-                    // 之後錯誤的話, 用這兩行
-                    // this.errorInfo = true;
-                    // this.errInfo = '錯誤';
+                    console.log(JSON.stringify(this.ruleForm));
+                    this.$http.post('/api/user/login', JSON.stringify(this.ruleForm))
+                    .then((response) => {
+                        if (response.data == 0){
+                            this.errorInfo = true;
+                            this.errorInfo = '查無此帳號, 請確認電子郵件是否輸入正確';
+                        }
+                        else if(response.data == -1){
+                            this.errorInfo = true;
+                            this.errorInfo = '密碼錯誤';
+                        }
+                        else if(response.status == 200){
+                            console.log('login success');
+                        }
+                    })
+                    .then((err)=>{
+                        console.log(err);
+                    })
                 }
                 else{
                     console.log('error submit!!');
