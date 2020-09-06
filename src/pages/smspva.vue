@@ -128,12 +128,10 @@ export default {
                                         }).
                                         then(() => {
                                             console.log(amount);
-                                            // this.$emit('login', {
-                                            //     accountId: 1,
-                                            //     account: 'f98989000@gmail.com',
-                                            //     fund: amount
-                                            // });
-                                            // console.log(response.data);
+                                            this.$emit('updateHeader', {
+                                                fund: amount
+                                            });
+                                            console.log(response.data);
                                             console.log('取碼成功');
 
                                         });

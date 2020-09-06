@@ -71,7 +71,7 @@ export default {
                         else if(response.status == 200){
                             console.log('login success');
                             // TODO: 不能傳密碼回去
-                            this.$emit('login', response.data);
+                            this.$emit('updateHeader', response.data);
                             this.$router.push({
                                 name: '快速取碼',
                                 params: {
