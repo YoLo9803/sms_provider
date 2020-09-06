@@ -1,27 +1,30 @@
 <template>
     <div>
-            <el-select v-model="service" clearable filterable placeholder="選擇服務或搜尋">
+            <el-select value-key="value" v-model="service" clearable filterable placeholder="選擇服務或搜尋">
                 <el-option
-                v-for="item in services"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="service in services"
+                :key="service.value"
+                :label="service.name"
+                :value="service">
                 </el-option>
             </el-select>
-            <el-select v-model="country" clearable filterable placeholder="選擇國家">
+            <el-select value-key="value" v-model="country" clearable filterable placeholder="選擇國家或搜尋">
                 <el-option
-                v-for="item in countrys"
-                :key="item.key"
-                :label="item.label"
-                :value="item.countryCode">
-                <span style="float: left">{{ item.countryCName }}</span>
-                <span style="float: left">{{ item.countryEName }}</span>
-                <span style="float: left; font-size: 13px">{{ item.countryCode }}</span>
-                <span style="float: right; color: #8492a6; font-size: 13px">{{ "$" + item.price }}</span>
+                v-for="country in countrys"
+                :key="country.value"
+                :label="country.EName+country.CName+country.Code+ '  $' +country.price"
+                :value="country">
+                <span style="float: left; font-size: 13px">{{ country.Code }}</span>
+                <span style="float: left">{{ country.CName }}</span>
+                <span style="float: left">{{ country.EName }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">{{ "$" + country.price }}</span>
                 </el-option>
             </el-select>
-        <el-button type="primary">快速取碼</el-button>
-        <div>
+            <div v-if="errorInfo">
+                    <span style="color: red">{{errInfo}}</span>
+            </div>
+        <el-button type="primary" @click.prevent="getNumber">快速取碼</el-button>
+        <!-- <div>
             <el-table
             :data="tableData"
             style="width: 100%">
@@ -53,42 +56,117 @@
                 </template>
             </el-table-column>
             </el-table>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
 export default {
+    created(){
+        this.userId = this.$route.params.userId;
+    },
     data(){
         return {
+            errorInfo : false,
+            //select item data
             services: [{
             value: 'opt37',
-            label: 'Line'
+            name: 'Line'
             }],
             service: '',
 
             countrys: [{
-            key: 'MY',
-            countryCode: '+60',
-            countryCName: '馬來西亞',
-            countryEName: 'Malaysia',
+            value: 'MY',
+            Code: '+60',
+            CName: '馬來西亞',
+            EName: 'Malaysia',
             price: 35
             }, {
-            key: 'ID',
-            countryCode: '+62',
-            countryCName: '印度尼西亞',
-            countryEName: 'Indonesia',
+            value: 'ID',
+            Code: '+62',
+            CName: '印度尼西亞',
+            EName: 'Indonesia',
             price: 30
             }, {
-            key: 'PT',
-            countryCode: '+351',
-            countryCName: '葡萄牙',
-            countryEName: 'Portugal',
+            value: 'PT',
+            Code: '+351',
+            CName: '葡萄牙',
+            EName: 'Portugal',
             price: 30
             }],
             country: ''
 
         };
+    },
+    methods:{
+        getNumber(){
+            if (this.service == '' || this.country == ''){
+                this.errorInfo = true;
+                this.errInfo = '請選擇服務與國家';
+            }
+            else{
+                this.errorInfo = false;
+                this.errInfo = '';
+                // console.log(this.service.value + this.country.value + this.country.price);
+                this.$http.get('/api/user/' + this.userId + '/fund')
+                    .then((res) => {
+                        var fund = res.data.fund;
+                        if (fund >= this.country.price){
+                            this.$http.get('/api/smspva/getnumber', {
+                                params: {service: this.service.value, 
+                                        country: this.country.value}
+                                })
+                                .then((response) => {
+                                    // console.log(response.data['number']);
+                                    if(response.data['response'] == "1"){
+                                        // TODO: 取碼table影響寫這
+                                        console.log('扣款');
+                                        var amount  = fund -= this.country.price;
+                                        this.$http.post('api/user/setAmountOfFund', {
+                                            userId: this.userId,
+                                            amount: amount
+                                        }).
+                                        then(() => {
+                                            console.log(amount);
+                                            // this.$emit('login', {
+                                            //     accountId: 1,
+                                            //     account: 'f98989000@gmail.com',
+                                            //     fund: amount
+                                            // });
+                                            // console.log(response.data);
+                                            console.log('取碼成功');
+
+                                        });
+                                    }
+                                    else{
+                                        this.errorInfo = true;
+                                        this.errInfo = '取碼失敗, 取消扣款, 請再試一次';
+                                    }
+                                }).catch((err) => {
+                                    console.error(err);
+                                    return;
+                                });
+                        }
+                        else{
+                            this.errorInfo = true;
+                            this.errInfo = '餘額不足, 請確認儲值金額';
+                            return;
+                        }
+                    }).catch((err) => {
+                        console.error(err);
+                        return;
+                    });
+                
+                // this.$http.get('/api/smspva/getnumber', {
+                //         params: {service: this.service.value, 
+                //                 country: this.country.value}
+                //         })
+                //     .then((response) => {
+                //         console.log(response.data);
+                //     })
+                // console.log(accountId);
+            }
+        }
     }
 }
 </script>

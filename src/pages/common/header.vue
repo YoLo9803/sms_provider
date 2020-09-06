@@ -1,8 +1,8 @@
 <template>
     <div>
         <h2 class="header">{{account}}</h2>
-        <h2 class="header">{{fund}}</h2>
-        <router-view v-on:childInit="onChildInit"></router-view>
+        <h2 v-on:deduction="onDeduction" class="header">{{fund}}</h2>
+        <router-view v-on:login="onLogin"></router-view>
     </div>
 </template>
 
@@ -15,14 +15,19 @@ export default {
     },
     data(){
         return {
+            accountId : this.accountId
         };
     },
     methods:{
-        onChildInit( value ){
+        onLogin(value){
+            console.log('login event trigger');
+            this.accountId = value.id;
+            this.account = value.account;
+            this.fund = value.fund;
+        },
+        onDeduction(value){
             console.log('event triggerd');
-            console.log(value);
-            this.account += value.account;
-            this.fund +=value.fund;
+            this.fund = value;
         }
     }
 }

@@ -71,13 +71,18 @@ export default {
                         else if(response.status == 200){
                             console.log('login success');
                             // TODO: 不能傳密碼回去
-                            this.$emit('childInit', response.data);
-                            this.$router.push('/smspva');
+                            this.$emit('login', response.data);
+                            this.$router.push({
+                                name: '快速取碼',
+                                params: {
+                                    userId: response.data.id
+                                }
+                            });
                         }
                     })
-                    .then((err)=>{
-                        console.log(err);
-                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
                 }
                 else{
                     console.log('error submit!!');
