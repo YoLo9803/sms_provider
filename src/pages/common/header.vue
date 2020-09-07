@@ -1,7 +1,10 @@
 <template>
     <div>
-        <h2 class="header">{{account}}</h2>
-        <h2 class="header">{{fund}}</h2>
+        <div class="header">
+            <h2>{{account}}</h2>
+            <h2>{{fund}}</h2>
+            <router-link class='register-router-link' to='deposit'>儲值</router-link>
+        </div>
         <router-view v-on:updateHeader="updateUserInfo"></router-view>
     </div>
 </template>

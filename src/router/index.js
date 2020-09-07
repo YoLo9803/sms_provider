@@ -28,6 +28,11 @@ export default new VueRouter({
                     path:'smspva',
                     component: () => import('@/pages/smspva'),
                     // meta: { requiresAuth: true },
+                },
+                {
+                    name:'儲值',
+                    path:'deposit',
+                    component: () => import('@/pages/deposit'),
                 }
             ]
         }
