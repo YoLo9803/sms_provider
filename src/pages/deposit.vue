@@ -6,12 +6,14 @@
         </div>
         <el-button @click.prevent="handleDeposit" type="primary">儲值(點選後將直接開始付款!)</el-button>
     </div>
+    
 </template>
 
 <script>
 export default {
     data(){
         return{
+            payment: this.payment,
             amount: this.amount,
             errorInfo:false,
             errorInfoText: '',
@@ -40,8 +42,13 @@ export default {
             else{
                 this.errorInfo = false;
                 this.errorInfoText = '';
+                console.log('金額無誤, 跳至付款畫面')
+                this.$http.get('/api/user/payment')
+                .then((response) => {
+                    console.log(response.data);
+                    return response.data;
+                });
             }
-            console.log(this.amount);
         }
     }
 }

@@ -24,9 +24,9 @@
                     <span style="color: red">{{errInfo}}</span>
             </div>
         <el-button type="primary" @click.prevent="getNumber">快速取碼</el-button>
-        <!-- <div>
+        <div>
             <el-table
-            :data="tableData"
+            :data="numberData"
             style="width: 100%">
             <el-table-column
                 prop="time"
@@ -42,21 +42,34 @@
                 prop="number"
                 label="號碼">
             </el-table-column>
-             <el-table-column
+            <el-table-column
                 prop="sms"
                 label="接收代碼">
+                <!-- <template slot-scope="scope">
+                    <el-button
+                    size="mini"
+                    @click="handleEdit(scope.$index, scope.row)">回復</el-button>
+                    <el-button
+                    size="mini"
+                    type="danger"
+                    @click="handleDelete(scope.$index, scope.row)">刪除</el-button>
+                </template> -->
             </el-table-column>
             <el-table-column
-                fixed="right"
-                label="操作"
-                width="100">
-                <template>
-                    <el-button type="text" size="small">回復</el-button>
-                    <el-button type="text" size="small">刪除</el-button>
+                prop="sms"
+                label="接收代碼">
+                <template slot-scope="scope">
+                    <el-button
+                    size="mini"
+                    @click="handleEdit(scope.$index, scope.row)">回復</el-button>
+                    <el-button
+                    size="mini"
+                    type="danger"
+                    @click="handleDelete(scope.$index, scope.row)">刪除</el-button>
                 </template>
             </el-table-column>
             </el-table>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -94,9 +107,32 @@ export default {
             EName: 'Portugal',
             price: 30
             }],
-            country: ''
+            country: '',
 
-        };
+            numberData: [{
+                time: '13:01',
+                country: '馬來西亞',
+                number: '097912044',
+                sms : '123'
+                }, {
+                time: '13:01',
+                country: '馬來西亞',
+                number: '123323213',
+                sms : '訊息'
+                }, {
+                time: '13:02',
+                country: '葡萄牙',
+                number: '424234234',
+                sms : '訊息'
+                }, {
+                time: '17:22',
+                country: '印度尼西亞',
+                number: '123123123123',
+                sms : ''
+                }],
+                search: ''
+
+            };
     },
     methods:{
         getNumber(){

@@ -4,10 +4,10 @@
         <div class='login-form'>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" >
                 <el-form-item prop="account">
-                    <el-input v-model="ruleForm.account" placeholder='電子郵件'></el-input>
+                    <el-input v-model="ruleForm.account" placeholder='電子郵件' prefix-icon="el-icon-user"></el-input>
                 </el-form-item>
                 <el-form-item prop='password'>
-                    <el-input v-model="ruleForm.password" placeholder="密碼"></el-input>
+                    <el-input v-model="ruleForm.password" placeholder="密碼" prefix-icon="el-icon-lock" show-password></el-input>
                 </el-form-item>
                 <div v-if="errorInfo">
                     <span style="color: red">{{errInfo}}</span>

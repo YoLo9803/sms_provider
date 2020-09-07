@@ -4,6 +4,7 @@ var router = express.Router();
 var mysql = require('mysql');
 var $sql = require('../db/sqlMap');
 const { user } = require('../db/sqlMap');
+const ecpay_payment = require('@yukaii/ecpay_payment_nodejs');
 
 // 連線資料庫
 var conn = mysql.createConnection(models.mysql);
@@ -113,6 +114,10 @@ router.post('/setAmountOfFund', (req, res) => {
             });
     }
 })
+
+const randomValue = function (min, max) {
+    return Math.round(Math.random() * (max - min) + min);
+}
 
 
 module.exports = router;
