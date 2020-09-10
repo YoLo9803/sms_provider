@@ -66,9 +66,7 @@ router.get('/', (req, res) => {
     let create = new ecpay_payment();
     let parameters = {};
     try{
-        console.log('開始付款');
         let htm = create.payment_client.aio_check_out_credit_onetime(parameters = base_param);
-        console.log('產生付款')
         res.send(htm);
     }
     catch(err){

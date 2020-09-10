@@ -5,6 +5,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
+import locale from 'element-ui/lib/locale/lang/zh-TW'
 axios.defaults.baseURL = '/api/'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 axios.defaults.withCredentials = true
@@ -24,7 +25,7 @@ router.beforeEach((to, from, next) => {
 
 // Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
-Vue.use(ElementUI)
+Vue.use(ElementUI, {locale})
 
 new Vue({
   router,
