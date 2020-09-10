@@ -50,14 +50,15 @@ export default {
                     { required: true, message: '請輸入密碼', trigger: 'blur' },
                     { min: 2, max: 18, message: '密碼長度應為2~18個字元'}
                 ]
-            },
-            msg: 'Welcome'
+            }
+            
         };
     },
     methods: {
         submitForm(formName){
             this.$refs[formName].validate((valid) => {
                 if (valid) {
+                    console.log(this.ruleForm);
                     this.$http.post('/api/user/login', this.ruleForm)
                     .then((response) => {
                         if (response.data == 0){

@@ -31,9 +31,9 @@ export default {
     },
     data(){
         return {
-            accountId : this.accountId,
-            fund : this.fund,
-            account : this.account,
+            accountId : '',
+            fund : '',
+            account : '',
             isLogin : false
         };
     },
