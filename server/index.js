@@ -20,7 +20,8 @@ app.use('/api/smspva', smsApi);
 app.use('/api/payment', paymentApi);
 
 // 監聽埠
-const port = 3000;
+// const port = 3000;
+const port  = process.env.PORT || 8080;
 app.engine('html', ejs.__express);
 app.set('view engine', 'html');
 app.listen(port);
