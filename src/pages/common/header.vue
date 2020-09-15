@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-container>
-        <el-header style="font-size:36px">快速取碼
+        <el-header style="font-size:36px">LINE代收驗證
         </el-header>
         <el-main>
             <router-view></router-view>

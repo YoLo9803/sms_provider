@@ -1,12 +1,13 @@
 <template>
     <div>
-        <div class="right">
+        <div class="middle">
+            <el-tag v-if="this.user.isLogin" effect="plain">
                 <i v-if="this.user.isLogin" class="el-icon-user" style="padding:10px"></i>
-                <span v-if="this.user.isLogin">{{this.user.account}}</span>
-        </div>
-        <div class="right">
+                {{this.user.account}}
                 <i v-if="this.user.isLogin" class="el-icon-wallet" style="padding:10px"></i>
-                <span v-if="this.user.isLogin">${{this.user.fund}}</span>
+                ${{this.user.fund}}
+                <el-link :underline="false" type="primary" @click.prevent="directToDepositPage">儲值</el-link>
+            </el-tag>
         </div>
             <div class="left">
                 <el-page-header @back="goBack"></el-page-header>
@@ -114,5 +115,9 @@ export default {
     .padding{
         padding:10px;
     }
+    .middle{
+      text-align: center;
+      margin-bottom: 20px;
+  }
 </style>
 
