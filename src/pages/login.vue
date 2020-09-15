@@ -51,14 +51,13 @@ export default {
                     { min: 2, max: 18, message: '密碼長度應為2~18個字元'}
                 ]
             }
-            
+
         };
     },
     methods: {
         submitForm(formName){
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    console.log(this.ruleForm);
                     this.$http.post('/api/user/login', this.ruleForm)
                     .then((response) => {
                         if (response.data == 0){
@@ -70,15 +69,22 @@ export default {
                             this.errInfo = '密碼錯誤';
                         }
                         else if(response.status == 200){
-                            console.log('login success');
                             // TODO: 不能傳密碼回去
-                            this.$emit('updateHeader', response.data);
-                            this.$router.push({
-                                name: '快速取碼',
-                                params: {
-                                    userId: response.data.id
-                                }
-                            });
+                            if(response.data.type == "1"){
+                                this.$router.push({
+                                    name: '後台',
+                                });
+                            }
+                            else{
+                                this.$router.push({
+                                    name: '快速取碼',
+                                    params: {
+                                        userId: response.data.id
+                                    }
+                                });
+                            }
+                                
+                            
                         }
                     })
                     .catch((err) => {

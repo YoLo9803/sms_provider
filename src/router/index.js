@@ -35,6 +35,18 @@ export default new VueRouter({
                     component: () => import('@/pages/deposit'),
                 }
             ]
+        },
+        {
+            name: '後台',
+            path: '/admin',
+            component: () => import('@/pages/admin/common/header'),
+            children:[
+                {
+                    name: '交易紀錄',
+                    path:'transactions',
+                    component: () => import('@/pages/admin/transactions')
+                }
+            ]
         }
     ]
 });

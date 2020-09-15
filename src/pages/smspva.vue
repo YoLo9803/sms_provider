@@ -1,7 +1,20 @@
 <template>
     <div>
+        <div class="right">
+            <el-tag v-if="this.user.isLogin" effect="plain">
+                <i v-if="this.user.isLogin" class="el-icon-user" style="padding:10px"></i>
+                {{this.user.account}}
+            </el-tag>
+        </div>
+        <div class="right">
+            <el-tag type="success" effect="plain" v-if="this.user.isLogin">
+                <i v-if="this.user.isLogin" class="el-icon-wallet" style="padding:10px"></i>
+                ${{this.user.fund}}
+                <el-button style="color:green;" type="text" @click.prevent="directToDepositPage">儲值</el-button>
+            </el-tag>
+        </div>
             <el-row :gutter="10" type="flex" justify="center">
-                <el-col :span="3">
+                <el-col :xs="6" :sm="5" :md="4" :lg="3" :xl="2">
                     <div>
                         <el-select value-key="value" v-model="service" clearable filterable placeholder="選擇服務或搜尋">
                         <el-option
@@ -13,7 +26,7 @@
                     </el-select>
                     </div>
                 </el-col>
-                <el-col :span="4">
+                <el-col :xs="6" :sm="5" :md="4" :lg="4" :xl="3">
                     <div>
                         <el-select value-key="value" v-model="country" clearable filterable placeholder="選擇國家或搜尋">
                             <el-option
@@ -29,7 +42,7 @@
                         </el-select>
                     </div>
                 </el-col>
-                <el-col :span="1">
+                <el-col :xs="6" :sm="5" :md="1" :lg="1" :xl="1">
                     <div>
                         <el-popconfirm
                             title="確定取碼嗎?" @onConfirm="getNumber">
@@ -42,7 +55,7 @@
                     <span style="color: red">{{errInfo}}</span>
             </div>
         <el-row type="flex" justify="center">
-            <el-col :span="14">
+            <el-col :xs="22" :sm="22" :md="16" :lg="16" :xl="16">
             <div>
                 <el-table
                 :data="numberData"
@@ -75,18 +88,15 @@
                         size="mini" v-if="scope.row.isGetMessageButtonVisible"
                         type="primary"
                         @click.prevent="handleGetMessage(scope.$index, scope.row)">接收訊息</el-button>
-                        <el-input size="mini" style="width: 150px" v-if="!scope.row.sms == ''" v-model="scope.row.sms"></el-input>
+                        <span>{{scope.row.sms}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
                     label="操作">
                     <template slot-scope="scope">
                         <el-button
-                        size="mini" v-if="scope.row.isRestoreButtonEnabled"
-                        @click.prevent="handleRestore(scope.$index, scope.row)">回復</el-button>
-                        <el-button
                         size="mini"
-                        type="danger" v-if="scope.row.isDeleteButtonEnabled"
+                        type="danger" v-if="scope.row.isDeleteButtonVisiable"
                         @click.prevent="handleDelete(scope.$index, scope.row)">刪除</el-button>
                     </template>
                 </el-table-column>
@@ -100,10 +110,33 @@
 <script>
 export default {
     created(){
-        this.userId = this.$route.params.userId;
+        if(this.$route.params.user != undefined){
+            this.user = this.$route.params.user;
+        }
+        else if(this.$route.params.userId == undefined){
+            this.$message({
+                message: '請先登入',
+                type: 'warning'
+            });
+            this.$router.push({
+                name: '登入'
+            });
+        }
+        else{
+            this.$http.get('/api/user/' + this.$route.params.userId + '/accountInfo')
+                .then((res)=>{
+                    this.user = {
+                        id: res.data.id,
+                        account: res.data.account,
+                        fund: res.data.fund,
+                        isLogin: true
+                    }
+                })
+        }
     },
     data(){
         return {
+            user: [],
             errorInfo : false,
             //select item data
             services: [{
@@ -133,26 +166,18 @@ export default {
             }],
             country: '',
 
-            numberData: [
-                // {
-                //     id: 123,
-                //     time: '10:00',
-                //     timer: 600000,//十分鐘的總秒數
-                //     country: '+62indonesia印度尼西亞',
-                //     number: 123,
-                //     countryAPICode : 123,
-                //     service: 'Line33333',
-                //     serviceAPICode: 123,
-                //     sms: '',
-                //     isEnabled: true,
-                //     isRestoreButtonEnabled: false,
-                //     isDeleteButtonEnabled: true,
-                //     isGetMessageButtonVisible: true 
-                // }
-            ]
+            numberData: []
             };
     },
     methods:{
+        directToDepositPage(){
+            this.$router.push({
+                name: '儲值',
+                params:{
+                    user: this.user
+                }
+            })
+        },
         getNumber(){
             if (this.service == '' || this.country == ''){
                 this.errorInfo = true;
@@ -161,7 +186,7 @@ export default {
             else{
                 this.errorInfo = false;
                 this.errInfo = '';
-                this.$http.get('/api/user/' + this.userId + '/fund')
+                this.$http.get('/api/user/' + this.user.id + '/fund')
                     .then((res) => {
                         var fund = res.data.fund;
                         if (fund >= this.country.price){
@@ -174,13 +199,11 @@ export default {
                                         // TODO: 取碼table影響寫這
                                         var amount  = fund -= this.country.price;
                                         this.$http.post('api/user/setAmountOfFund', {
-                                            userId: this.userId,
+                                            userId: this.user.id,
                                             amount: amount
                                         }).
                                         then(() => {
-                                            this.$emit('updateHeader', {
-                                                fund: amount
-                                            });
+                                            this.user.fund = amount;
                                             var smsPvaData = {
                                                 country: this.country.Code + this.country.CName + this.country.EName,
                                                 service: this.service.name,
@@ -195,6 +218,12 @@ export default {
                                                 message: '取碼成功, 從帳戶扣除' + this.country.price + '元',
                                                 type: 'success'
                                             });
+                                        });
+                                        this.$http.post('api/payment/createConsumptionRecored', {
+                                                userId: this.user.id,
+                                                amount: this.country.price,
+                                                service: this.service.value,
+                                                country: this.country.value
                                         });
                                     }
                                     else{
@@ -219,20 +248,8 @@ export default {
             }
         },
 
-        handleRestore(index, row){
-            row.isEnabled = true;
-            row.isDeleteButtonEnabled = true;
-            row.isRestoreButtonEnabled = false;
-            row.isGetMessageButtonVisible = true;
-            row.sms = '';
-        },
-
-        handleDelete(index, row){
-            row.isEnabled = false;
-            row.isRestoreButtonEnabled = true;
-            row.isDeleteButtonEnabled = false;
-            row.isGetMessageButtonVisible = false;
-            row.sms = '';
+        handleDelete(index){
+            this.numberData.splice(index, 1);
         },
 
         handleGetMessage(index, row){
@@ -248,8 +265,6 @@ export default {
                 if(response.data.response == "1"){
                     row.sms = response.data.sms;
                     row.isGetMessageButtonVisible = false;
-                    row.isDeleteButtonEnabled = false;
-                    row.isRestoreButtonEnabled = false;
                     row.isEnabled =false;
                     this.$message({
                         message: '成功取得訊息!',
@@ -273,7 +288,7 @@ export default {
                         row.isGetMessageButtonVisible = false;
                         if (timer == 0){
                             row.isGetMessageButtonVisible = true;
-                            row.sms = '請再試一次';
+                            row.sms = '';
                             window.clearInterval(clock);
                             return;
                         }
@@ -285,8 +300,7 @@ export default {
                         type: 'warning'
                     });
                     row.isGetMessageButtonVisible = false;
-                    row.isDeleteButtonEnabled = false;
-                    row.isRestoreButtonEnabled = false;
+                    row.isDeleteButtonVisiable = false;
                     row.isEnabled =false;
                     row.sms == '';
                 }
@@ -308,7 +322,7 @@ export default {
                 item.time = (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
                 if (item.timer == 0){
                     window.clearInterval(clock);
-                    item.isEnabled = item.isRestoreButtonEnabled = item.isDeleteButtonEnabled = item.isGetMessageButtonVisible = false;
+                    item.isEnabled = item.isDeleteButtonVisiable = item.isGetMessageButtonVisible = false;
                     item.sms = '';
                     return;
                 }
@@ -326,29 +340,20 @@ export default {
                 serviceAPICode: data.serviceAPICode,
                 sms: '',
                 isEnabled: true,
-                isRestoreButtonEnabled: false,
-                isDeleteButtonEnabled: true,
+                isDeleteButtonVisiable: true,
                 isGetMessageButtonVisible: true 
             })
         }
     }
 }
-// //擴充arrary.remove方法
-// Array.prototype.remove = function() {
-//     var what, a = arguments, L = a.length, ax;
-//     while (L && this.length) {
-//         what = a[--L];
-//         while ((ax = this.indexOf(what)) !== -1) {
-//             this.splice(ax, 1);
-//         }
-//     }
-//     return this;
-// };
 </script>
 
 <style>
   .el-table .deleted-row {
-    /* background: lightcoral; */
     opacity: 0.8;
-  }
+    }
+  .right{
+    text-align: right;
+    font-size: 16px;
+    }
 </style>

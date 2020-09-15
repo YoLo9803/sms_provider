@@ -1,18 +1,54 @@
 <template>
     <div>
-        <el-input v-model.number="amount" type='text' placeholder="請輸入儲值金額"></el-input>
-        <div v-if="errorInfo">
-            <span style="color: red">{{errorInfoText}}</span>
+        <div class="right">
+                <i v-if="this.user.isLogin" class="el-icon-user" style="padding:10px"></i>
+                <span v-if="this.user.isLogin">{{this.user.account}}</span>
         </div>
-        <el-button @click.prevent="handleDeposit" type="primary">儲值(點選後將直接開始付款!)</el-button>
+        <div class="right">
+                <i v-if="this.user.isLogin" class="el-icon-wallet" style="padding:10px"></i>
+                <span v-if="this.user.isLogin">${{this.user.fund}}</span>
+        </div>
+            <div class="left">
+                <el-page-header @back="goBack"></el-page-header>
+            </div>
+        <div class="padding">
+        <el-row type="flex" justify="center">
+            <el-col :xs="20" :sm="16" :md="12" :lg="8" :xl="6">
+            <el-input v-model.number="amount" type='text' placeholder="請輸入儲值金額"></el-input>
+            <div v-if="errorInfo">
+                <span style="color: red">{{errorInfoText}}</span>
+            </div>
+            </el-col>
+        </el-row>
+        </div>
+        <div class="padding">
+        <el-row type="flex" justify="center">
+            <el-button @click.prevent="handleDeposit" type="primary">儲值(點選後將直接開始付款!)</el-button>
+        </el-row>
+        </div>
     </div>
     
 </template>
 
 <script>
 export default {
+    created(){
+        if(this.$route.params.user == undefined){
+            this.$message({
+                message: '請先登入',
+                type: 'warning'
+            });
+            this.$router.push({
+                name: '登入'
+            });
+        }
+        else{
+            this.user = this.$route.params.user;
+        }
+    },
     data(){
         return{
+            user: [],
             payment: this.payment,
             amount: this.amount,
             errorInfo:false,
@@ -42,15 +78,41 @@ export default {
             else{
                 this.errorInfo = false;
                 this.errorInfoText = '';
+                console.log(this.amount);
                 console.log('金額無誤, 跳至付款畫面')
-                this.$http.get('/api/user/payment')
-                .then((response) => {
-                    console.log(response.data);
-                    return response.data;
-                });
+                // this.$http.get('/api/user/payment/payAction')
+                // .then((response) => {
+                //     console.log(response.data);
+                //     return response.data;
+                // });
+                window.location.href = "https://smspvabackend.herokuapp.com/api/payment/payAction?price=" + this.amount + '&userId=' + this.user.id;
             }
+        },
+        goBack(){
+            this.$router.push({
+                name: '快速取碼',
+                params: {
+                    user: this.user
+                }
+            });
         }
     }
 }
 </script>
+
+<style>
+  .right{
+    /* background-color: #c1dafb; */
+    text-align: right;
+    font-size: 16px;
+    }
+    .left{
+    /* background-color: #c1dafb; */
+    text-align: left;
+    font-size: 16px;
+    }
+    .padding{
+        padding:10px;
+    }
+</style>
 
