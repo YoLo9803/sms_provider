@@ -6,7 +6,9 @@
                 {{this.user.account}}
                 <i v-if="this.user.isLogin" class="el-icon-wallet" style="padding:10px"></i>
                 ${{this.user.fund}}
-                <el-link :underline="false" type="primary" @click.prevent="directToDepositPage">儲值</el-link>
+            </el-tag>
+            <el-tag v-if="this.user.isLogin" effect="plain" type="success" style="margin-left:10px">
+                <el-link :underline="false" type="success" disabled @click.prevent="directToDepositPage">儲值</el-link>
             </el-tag>
         </div>
             <div class="left">

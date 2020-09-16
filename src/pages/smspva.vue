@@ -6,7 +6,9 @@
                 {{this.user.account}}
                 <i v-if="this.user.isLogin" class="el-icon-wallet" style="padding:10px"></i>
                 ${{this.user.fund}}
-                <el-link :underline="false" type="primary" @click.prevent="directToDepositPage">儲值</el-link>
+            </el-tag>
+            <el-tag v-if="this.user.isLogin" effect="plain" type="success" style="margin-left:10px">
+                <el-link :underline="false" type="success" @click.prevent="directToDepositPage">儲值</el-link>
             </el-tag>
         </div>
         <div v-if="!isMobile()">
@@ -29,7 +31,7 @@
                             <el-option
                             v-for="country in countrys"
                             :key="country.value"
-                            :label="country.EName+country.CName+country.Code+ '  $' +country.price"
+                            :label="country.Code+country.EName+country.CName+'  $' +country.price"
                             :value="country">
                             <span style="float: left; font-size: 13px">{{ country.Code }}</span>
                             <span style="float: left">{{ country.CName }}</span>
@@ -69,7 +71,7 @@
                         <el-option
                         v-for="country in countrys"
                         :key="country.value"
-                        :label="country.EName+country.CName+country.Code+ '  $' +country.price"
+                        :label="country.Code+country.EName+country.CName+ '  $' +country.price"
                         :value="country">
                         <span style="float: left; font-size: 13px">{{ country.Code }}</span>
                         <span style="float: left">{{ country.CName }}</span>
