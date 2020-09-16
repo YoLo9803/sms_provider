@@ -5,8 +5,20 @@
         </el-header>
         <el-main>
             <router-view></router-view>
+            <!-- <div class="bottom">
+                客服人員line ID : 08570987
+            </div> -->
         </el-main>
-        <el-footer>@2020 sms provider</el-footer>
+        
+        <div class="bottom">
+            <el-tag style="font-size:18px" effect="plain">
+                客服人員Line ID : 08570987
+            </el-tag>
+            <el-footer>
+                @2020 sms provider
+            </el-footer>
+        </div>
+           
         </el-container>
     </div>
 </template>
@@ -38,15 +50,17 @@ export default {
     line-height: 65px;
     text-align: center;
     }
-    .right{
-        // background-color: #c1dafb;
-        text-align: right;
-        font-size: 20px;
+
+    .bottom{
+        width: 300px;
+        position:absolute;
+        left: 50%;
+        margin-left: -150px;
+        text-align: center;
+        bottom: 0px;
     }
+
     .el-footer{
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 80px;
+        position: relative;
     }
 </style>

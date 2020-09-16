@@ -6,7 +6,7 @@
 
 <style>
   body {
-      padding: 0;
+      padding-bottom: 80px;
       border: 0;
       margin: 0;
     }

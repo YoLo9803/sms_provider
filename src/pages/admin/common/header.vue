@@ -8,8 +8,7 @@
                         <el-menu
                         :default-active="$route.path"
                         router
-                        @select="handleSelect"
-                        class="el-menu-vertical-demo">
+                        @select="handleSelect">
                         <el-menu-item index='/admin/transactions' :route="{path: '/admin/transactions', params:{ isAdmin: true}}">
                             <i class="el-icon-s-order"></i>
                             <span slot="title">查詢交易紀錄</span>
