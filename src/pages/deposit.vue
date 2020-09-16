@@ -27,7 +27,7 @@
         <div class="padding">
         <el-row type="flex" justify="center">
             <el-button @click.prevent="handleDeposit" type="primary">儲值(點選後將直接開始付款!)</el-button>
-        </el-row>
+        </el-row> 
         </div>
     </div>
     

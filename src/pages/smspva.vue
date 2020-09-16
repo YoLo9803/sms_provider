@@ -107,7 +107,8 @@
                 </el-table-column>
                 <el-table-column
                     prop="country"
-                    label="國家">
+                    label="國家"
+                    width="180">
                 </el-table-column>
                 <el-table-column
                     prop="service"
@@ -116,7 +117,8 @@
                 </el-table-column>
                 <el-table-column
                     prop="number"
-                    label="號碼">
+                    label="號碼"
+                    width="100">
                 </el-table-column>
                 <el-table-column
                     prop="sms"
