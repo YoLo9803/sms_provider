@@ -13,7 +13,7 @@
                     <span style="color: red">{{errInfo}}</span>
                 </div>
                 <div>
-                    <el-button class='login-button' type="primary" @click.prevent="submitForm('ruleForm')">登陸</el-button>
+                    <el-button class='login-button' type="primary" @click.prevent="submitForm('ruleForm')">登入</el-button>
                 </div>
                     <router-link class='register-router-link' to='register'>註冊</router-link>
             </el-form>
@@ -73,6 +73,9 @@ export default {
                             if(response.data.type == "1"){
                                 this.$router.push({
                                     name: '後台',
+                                    params: {
+                                        isAdmin: true
+                                    }
                                 });
                             }
                             else{

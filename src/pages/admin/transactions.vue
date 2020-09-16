@@ -19,7 +19,8 @@
                 </div>
             </el-col>
         </el-row>
-        <div>
+        <el-row type="flex" justify="center">
+            <el-col :span="16">
             <el-table
                 :data="transactionData"
                 :row-class-name="tableRowClassName"
@@ -48,14 +49,24 @@
                     prop="service"
                     label="服務">
                 </el-table-column>
-                </el-table>
-        </div>
+            </el-table>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
 <script>
 export default {
     created(){
+        // if(this.$route.params.isAdmin != true){
+        //     this.$message({
+        //         message: '請先登入',
+        //         type: 'warning'
+        //     });
+        //     this.$router.push({
+        //         name: '登入'
+        //     });
+        // }
         this.selectedUsers = this.getUsers();
     },
     methods:{

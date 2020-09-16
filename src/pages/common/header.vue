@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-container>
-        <el-header style="font-size:36px">LINE代收驗證
+        <el-header style="font-size:32px">06478代收驗證碼平台
         </el-header>
         <el-main>
             <router-view></router-view>

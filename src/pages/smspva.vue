@@ -243,33 +243,19 @@ export default {
                                 .then((response) => {
                                     if(response.data['response'] == "1"){
                                         // TODO: 取碼table影響寫這
-                                        var amount  = fund -= this.country.price;
-                                        this.$http.post('api/user/setAmountOfFund', {
-                                            userId: this.user.id,
-                                            amount: amount
-                                        }).
-                                        then(() => {
-                                            this.user.fund = amount;
-                                            var smsPvaData = {
-                                                country: this.country.Code + this.country.CName + this.country.EName,
-                                                service: this.service.name,
-                                                countryAPICode : this.country.value,
-                                                serviceAPICode: this.service.value,
-                                                number: response.data.number,
-                                                id: response.data.id,
-                                            }
-                                            this.appendTable(smsPvaData);
-                                            this.startCountDown(this.numberData[this.numberData.length - 1]);
-                                            this.$message({
-                                                message: '取碼成功, 從帳戶扣除' + this.country.price + '元',
-                                                type: 'success'
-                                            });
-                                        });
-                                        this.$http.post('api/payment/createConsumptionRecored', {
-                                                userId: this.user.id,
-                                                amount: this.country.price,
-                                                service: this.service.value,
-                                                country: this.country.value
+                                        var smsPvaData = {
+                                            country: this.country.Code + this.country.CName + this.country.EName,
+                                            service: this.service.name,
+                                            countryAPICode : this.country.value,
+                                            serviceAPICode: this.service.value,
+                                            number: response.data.number,
+                                            id: response.data.id,
+                                        }
+                                        this.appendTable(smsPvaData);
+                                        this.startCountDown(this.numberData[this.numberData.length - 1]);
+                                        this.$message({
+                                            message: '取碼成功!',
+                                            type: 'success'
                                         });
                                     }
                                     else{
@@ -312,15 +298,33 @@ export default {
                     row.sms = response.data.sms;
                     row.isGetMessageButtonVisible = false;
                     row.isEnabled =false;
-                    this.$message({
-                        message: '成功取得訊息!',
-                        type: 'success'
-                    });
-                    this.$http.get('/api/smspva/ban', {
-                        params:{
-                            service: row.serviceAPICode,
-                            id: row.id
-                        }
+                    this.$http.get('/api/user/' + this.user.id + '/fund')
+                    .then((res) => {
+                        var fund = res.data.fund;
+                        var amount = fund -= this.country.price;
+                        this.$http.post('api/user/setAmountOfFund', {
+                            userId: this.user.id,
+                            amount: amount
+                        }).
+                        then(() => {
+                            this.user.fund = amount;
+                            this.$message({
+                                message: '成功取得訊息, 從帳戶扣除' + this.country.price + '元!',
+                                type: 'success'
+                            });
+                            this.$http.get('/api/smspva/ban', {
+                                params:{
+                                    service: row.serviceAPICode,
+                                    id: row.id
+                                }
+                            })
+                        });
+                        this.$http.post('api/payment/createConsumptionRecored', {
+                                userId: this.user.id,
+                                amount: this.country.price,
+                                service: this.service.value,
+                                country: this.country.value
+                        });
                     })
                 }
                 else if (response.data.response == "2"){

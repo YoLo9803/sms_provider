@@ -45,6 +45,11 @@ export default new VueRouter({
                     name: '交易紀錄',
                     path:'transactions',
                     component: () => import('@/pages/admin/transactions')
+                },
+                {
+                    name: '會員資料',
+                    path:'membersInfo',
+                    component: () => import('@/pages/admin/membersInfo')
                 }
             ]
         }
