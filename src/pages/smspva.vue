@@ -15,7 +15,7 @@
             <el-row :gutter="10" type="flex" justify="center">
                 <el-col :xs="6" :sm="5" :md="4" :lg="3" :xl="2">
                     <div>
-                        <el-select value-key="value" v-model="service" clearable filterable placeholder="選擇服務或搜尋">
+                        <el-select value-key="value" v-model="service" clearable filterable @change="onServiceChange" placeholder="選擇服務或搜尋">
                         <el-option
                         v-for="service in services"
                         :key="service.value"
@@ -56,7 +56,7 @@
         </div>
         <div v-if="isMobile()">
             <div class="middle">
-                <el-select value-key="value" v-model="service" clearable filterable placeholder="選擇服務或搜尋">
+                <el-select value-key="value" v-model="service" clearable filterable @change="onServiceChange" placeholder="選擇服務或搜尋">
                 <el-option
                 v-for="service in services"
                 :key="service.value"
@@ -183,6 +183,9 @@ export default {
             services: [{
             value: 'opt37',
             name: 'Line'
+            }, {
+            value: 'opt29',
+            name: 'Telegram'
             }],
             service: '',
 
@@ -218,6 +221,50 @@ export default {
                     user: this.user
                 }
             })
+        },
+        onServiceChange(setValue){
+            if(setValue == this.services.find(service=>{ return service.name == "Line"})){
+                this.countrys= [{
+                    value: 'MY',
+                    Code: '+60',
+                    CName: '馬來西亞',
+                    EName: 'Malaysia',
+                    price: 35
+                    }, {
+                    value: 'ID',
+                    Code: '+62',
+                    CName: '印度尼西亞',
+                    EName: 'Indonesia',
+                    price: 30
+                    }, {
+                    value: 'PT',
+                    Code: '+351',
+                    CName: '葡萄牙',
+                    EName: 'Portugal',
+                    price: 30
+                }]
+            }
+            else if(setValue == this.services.find(service=>{ return service.name == "Telegram"})){
+                this.countrys= [{
+                    value: 'MY',
+                    Code: '+60',
+                    CName: '馬來西亞',
+                    EName: 'Malaysia',
+                    price: 40
+                    }, {
+                    value: 'ID',
+                    Code: '+62',
+                    CName: '印度尼西亞',
+                    EName: 'Indonesia',
+                    price: 40
+                    }, {
+                    value: 'PT',
+                    Code: '+351',
+                    CName: '葡萄牙',
+                    EName: 'Portugal',
+                    price: 40
+                }]
+            }
         },
         isMobile: function() {
             var check = false;
