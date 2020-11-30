@@ -34,6 +34,10 @@
                     label="消費種類">
                 </el-table-column>
                 <el-table-column
+                    prop="time"
+                    label="交易日期">
+                </el-table-column>
+                <el-table-column
                     prop="amount"
                     label="金額">
                 </el-table-column>
@@ -58,20 +62,10 @@
 <script>
 export default {
     created(){
-        // if(this.$route.params.isAdmin != true){
-        //     this.$message({
-        //         message: '請先登入',
-        //         type: 'warning'
-        //     });
-        //     this.$router.push({
-        //         name: '登入'
-        //     });
-        // }
         this.selectedUsers = this.getUsers();
     },
     methods:{
         searchTransactions(){
-            console.log(this.selectedUsers);
             this.$http.get('api/payment',
                 {
                     params:{
@@ -79,7 +73,6 @@ export default {
                     }
                 })
             .then((response) =>{
-                console.log(response.data);
                 this.formatTransactionData(response.data);
             })
         },
@@ -87,12 +80,12 @@ export default {
             var data = [];
             transactions.forEach(item => {
                 if(isNaN(item.statusOrCountry)){
-                    console.log(item.statusOrCountry);
                     var country = this.countrys[item.statusOrCountry];
                     var service = this.services[item.tradeNoOrService];
                     data.push({
                         account: item.account,
                         type: '取碼',
+                        time: this.formatDateToYYYYMMDD(item.time),
                         amount: item.amount,
                         isFinish: '已付款',
                         country: country,
@@ -103,6 +96,7 @@ export default {
                     data.push({
                         account: item.account,
                         type: '儲值',
+                        time: this.formatDateToYYYYMMDD(item.time),
                         amount: item.amount,
                         isFinish: item.statusOrCountry == '0' ? '尚未付款' : '已付款',
                         country: '-',
@@ -111,6 +105,13 @@ export default {
                 }
                 this.transactionData = data;
             });
+        },
+        formatDateToYYYYMMDD(date){
+            var time = new Date(date);
+            var fullYear = time.getFullYear().toString();
+            var month = time.getMonth().toString();
+            var day = time.getDay().toString();
+            return fullYear + '-' + (month.length < 2 ? '0' + month : month) + '-' + (day.length < 2 ? '0' + day : day); 
         },
         getUsers(){
             this.$http.get('/api/user')
