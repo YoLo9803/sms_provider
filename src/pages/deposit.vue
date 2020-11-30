@@ -88,7 +88,7 @@ export default {
                 //     console.log(response.data);
                 //     return response.data;
                 // });
-                window.location.href = "https://smspvabackend.herokuapp.com/api/payment/payAction?price=" + this.amount + '&userId=' + this.user.id;
+                window.location.href = "https://smspva3579.herokuapp.com/api/payment/payAction?price=" + this.amount + '&userId=' + this.user.id;
             }
         },
         goBack(){

@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-container>
-        <el-header style="font-size:32px">06478代收驗證碼平台
+        <el-header style="font-size:32px">3579快速代收驗證碼平台
         </el-header>
         <el-main>
             <router-view></router-view>
@@ -11,11 +11,11 @@
         </el-main>
         
         <div class="bottom">
-            <el-tag style="font-size:18px" effect="plain">
-                信箱:vin53539@gmail.com <br/>客服時間:周一~周日24小時 <br/>｜條款及規則｜06478驗證碼
+            <el-tag style="font-size:18px">
+                聯絡我們 <br/>LINE:@727ygwth<br/>客服時間:24H
             </el-tag>
             <el-footer>
-                @2020 sms provider
+                @2020 3579sms
             </el-footer>
         </div>
            

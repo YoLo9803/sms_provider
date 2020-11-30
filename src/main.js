@@ -8,7 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import locale from 'element-ui/lib/locale/lang/zh-TW'
 axios.defaults.timeout = 5000
 //for production
-axios.defaults.baseURL = 'https://smspvabackend.herokuapp.com'
+axios.defaults.baseURL = 'https://sms3579.herokuapp.com'
 // axios.defaults.baseURL = 'http://localhost:3000'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 // axios.defaults.withCredentials = true
