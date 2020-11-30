@@ -15,10 +15,10 @@
             <el-row :gutter="10" type="flex" justify="center">
                 <el-col :xs="6" :sm="5" :md="4" :lg="3" :xl="2">
                     <div>
-                        <el-select value-key="value" v-model="service" clearable filterable @change="onServiceChange" placeholder="選擇服務或搜尋">
+                        <el-select value-key="name" v-model="service" clearable filterable @change="onServiceChange" placeholder="選擇服務或搜尋">
                         <el-option
                         v-for="service in services"
-                        :key="service.value"
+                        :key="service.name"
                         :label="service.name"
                         :value="service">
                         </el-option>
@@ -50,16 +50,16 @@
                     </div>
                 </el-col>
             </el-row>
-            <div v-if="errorInfo">
-                    <span style="color: red">{{errInfo}}</span>
+            <div v-if="errorInfo" style="text-align:center">
+                <span style="color: red">{{errInfo}}</span>
             </div>
         </div>
         <div v-if="isMobile()">
             <div class="middle">
-                <el-select value-key="value" v-model="service" clearable filterable @change="onServiceChange" placeholder="選擇服務或搜尋">
+                <el-select value-key="name" v-model="service" clearable filterable @change="onServiceChange" placeholder="選擇服務或搜尋">
                 <el-option
                 v-for="service in services"
-                :key="service.value"
+                :key="service.name"
                 :label="service.name"
                 :value="service">
                 </el-option>
@@ -184,8 +184,32 @@ export default {
             value: 'opt37',
             name: 'Line'
             }, {
+            value: 'opt67',
+            name: 'WeChat'
+            }, {
             value: 'opt29',
             name: 'Telegram'
+            }, {
+            value: 'opt20',
+            name: 'WhatsApp'
+            }, {
+            value: 'opt9',
+            name: 'Tinder'
+            }, {
+            value: 'opt19',
+            name: '探探'
+            },{
+            value: 'opt19',
+            name: 'OMI'
+            },{
+            value: 'opt19',
+            name: 'JD'
+            }, {
+            value: 'opt19',
+            name:'Apple'
+            }, {
+            value: 'opt19',
+            name:'WeTouch'
             }],
             service: '',
 
@@ -223,7 +247,7 @@ export default {
             })
         },
         onServiceChange(setValue){
-            if(setValue == this.services.find(service=>{ return service.name == "Line"})){
+            if(setValue.name == "Line"){
                 this.countrys= [{
                     value: 'MY',
                     Code: '+60',
@@ -243,8 +267,11 @@ export default {
                     EName: 'Portugal',
                     price: 30
                 }]
+                if (!this.countrys.find(country=>{ return country.value == this.country.value})){
+                    this.country = "";
+                }
             }
-            else if(setValue == this.services.find(service=>{ return service.name == "Telegram"})){
+            else if(["Telegram", "WeChat", "WhatsApp"].includes(setValue.name)){
                 this.countrys= [{
                     value: 'MY',
                     Code: '+60',
@@ -264,6 +291,57 @@ export default {
                     EName: 'Portugal',
                     price: 40
                 }]
+                if (!this.countrys.find(country=>{ return country.value == this.country.value})){
+                    this.country = "";
+                }
+            }
+            else if(setValue.name == "Tinder"){
+                this.countrys= [{
+                    value: 'MY',
+                    Code: '+60',
+                    CName: '馬來西亞',
+                    EName: 'Malaysia',
+                    price: 40
+                    }, {
+                    value: 'ID',
+                    Code: '+62',
+                    CName: '印度尼西亞',
+                    EName: 'Indonesia',
+                    price: 40
+                    }]
+                if (!this.countrys.find(country=>{ return country.value == this.country.value})){
+                    this.country = "";
+                }
+            }
+            else if(["OMI", "JD", "Apple", "WeTouch"].includes(setValue.name)){
+                this.countrys= [{
+                    value: 'MY',
+                    Code: '+60',
+                    CName: '馬來西亞',
+                    EName: 'Malaysia',
+                    price: 40
+                    }]
+                if (!this.countrys.find(country=>{ return country.value == this.country.value})){
+                    this.country = "";
+                }
+            }
+            else if(setValue.name == "探探"){
+                this.countrys= [{
+                    value: 'MY',
+                    Code: '+60',
+                    CName: '馬來西亞',
+                    EName: 'Malaysia',
+                    price: 40
+                    }, {
+                    value: 'HT',
+                    Code: '+509',
+                    CName: '海地',
+                    EName: 'Haiti',
+                    price: 40
+                    }]
+                if (!this.countrys.find(country=>{ return country.value == this.country.value})){
+                    this.country = "";
+                }
             }
         },
         isMobile: function() {
