@@ -211,28 +211,13 @@ export default {
             }, {
             value: 'opt19',
             name:'WeTouch'
+            }, {
+            value: 'opt19',
+            name:'Uber Eats'
             }],
             service: '',
 
-            countrys: [{
-            value: 'MY',
-            Code: '+60',
-            CName: '馬來西亞',
-            EName: 'Malaysia',
-            price: 35
-            }, {
-            value: 'ID',
-            Code: '+62',
-            CName: '印度尼西亞',
-            EName: 'Indonesia',
-            price: 30
-            }, {
-            value: 'PT',
-            Code: '+351',
-            CName: '葡萄牙',
-            EName: 'Portugal',
-            price: 30
-            }],
+            countrys: [],
             country: '',
 
             numberData: []
@@ -302,25 +287,25 @@ export default {
                     Code: '+60',
                     CName: '馬來西亞',
                     EName: 'Malaysia',
-                    price: 40
+                    price: 45
                     }, {
                     value: 'ID',
                     Code: '+62',
                     CName: '印度尼西亞',
                     EName: 'Indonesia',
-                    price: 40
+                    price: 45
                     }]
                 if (!this.countrys.find(country=>{ return country.value == this.country.value})){
                     this.country = "";
                 }
             }
-            else if(["OMI", "JD", "Apple", "WeTouch"].includes(setValue.name)){
+            else if(["OMI", "JD", "Apple", "WeTouch", "Uber Eats"].includes(setValue.name)){
                 this.countrys= [{
                     value: 'MY',
                     Code: '+60',
                     CName: '馬來西亞',
                     EName: 'Malaysia',
-                    price: 40
+                    price: 45
                     }]
                 if (!this.countrys.find(country=>{ return country.value == this.country.value})){
                     this.country = "";
