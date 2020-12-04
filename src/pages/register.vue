@@ -15,6 +15,7 @@
                 <div>
                     <el-button class='register-button' type="primary" @click.prevent="submitForm('ruleForm')">註冊</el-button>
                 </div>
+                    <router-link class='login-router-link' to='/'>登入</router-link>
             </el-form>
         </div>
     </div>
@@ -99,7 +100,7 @@ export default {
         width:30%;
         height:36px;
     }
-    .register-router-link{
+    .login-router-link{
         font-size:16px;
         line-height:30px;
         color: gray;
