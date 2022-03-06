@@ -213,6 +213,9 @@ export default {
             }, {
             value: 'opt19',
             name:'Uber Eats'
+            }, {
+            value: 'opt1',
+            name:'Gmail, Youtube'
             }],
             service: '',
 
@@ -322,6 +325,18 @@ export default {
                     Code: '+509',
                     CName: '海地',
                     EName: 'Haiti',
+                    price: 45
+                    }]
+                if (!this.countrys.find(country=>{ return country.value == this.country.value})){
+                    this.country = "";
+                }
+            }
+            else if(setValue.name == "Gmail, Youtube"){
+                this.countrys= [{
+                    value: 'MY',
+                    Code: '+60',
+                    CName: '馬來西亞',
+                    EName: 'Malaysia',
                     price: 45
                     }]
                 if (!this.countrys.find(country=>{ return country.value == this.country.value})){
